@@ -1,0 +1,1 @@
+In general, there are more phishing reports on weekends, with the average at 7.98. There are less phishing reports on weekdays, with the average of 2.88. Since the weekends is only two days compared to five day weekdays, it's not very reliable.  

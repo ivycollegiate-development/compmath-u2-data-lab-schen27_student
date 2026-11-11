@@ -20,3 +20,38 @@ plt.xticks(rotation=45)   # angle the date labels so they don't overlap
 plt.tight_layout()        # prevents label cutoff
 plt.savefig("chart1_timeline.png", dpi=150)
 plt.clf()
+
+from datetime import datetime
+
+def is_weekend(d):
+    return datetime.strptime(d, "%Y-%m-%d").weekday() >= 5   # 5 = Sat, 6 = Sun
+
+wd, we = [], []
+for row in rows:
+    (we if is_weekend(row["date"]) else wd).append(int(row["phishing_reports"]))
+
+avg_wd, avg_we = sum(wd) / len(wd), sum(we) / len(we)
+print(f"weekday {avg_wd:.2f} ({len(wd)} days) | weekend {avg_we:.2f} ({len(we)} days)")
+
+plt.figure(figsize=(6, 4))
+plt.bar(["Weekday", "Weekend"], [avg_wd, avg_we])
+plt.text(0, avg_wd, f"{avg_wd:.2f}", ha="center", va="bottom")
+plt.text(1, avg_we, f"{avg_we:.2f}", ha="center", va="bottom")
+plt.title("<your finding, for your audience>")
+plt.xlabel("Day type")
+plt.ylabel("Average phishing reports")
+plt.ylim(bottom=0)
+plt.tight_layout()
+plt.savefig("chart2_weekday_weekend.png")
+plt.clf()
+
+rates = [float(row["login_success_rate"]) for row in rows]
+
+plt.figure(figsize=(7, 4))
+plt.hist(rates, bins=15, edgecolor="white")
+plt.title("<your finding, for your audience>")
+plt.xlabel("Login success rate")
+plt.ylabel("Number of days")
+plt.tight_layout()
+plt.savefig("chart3_success_rate.png")
+plt.clf()
